@@ -1,0 +1,378 @@
+openapi: "3.0.3"
+info:
+  version: 0.0.1
+  title: MicroPoS
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080/api
+paths:
+  /carts:
+    get:
+      summary: List all carts
+      operationId: listCarts
+      tags:
+        - carts
+      responses:
+        '200':
+          description: An array of carts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      tags:
+        - carts
+      operationId: createCart
+      summary: Create a new cart
+      responses:
+        201:
+          description: The cart was successfully added.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /carts/{cartId}:
+    get:
+      summary: Info for a specific cart
+      operationId: getCartById
+      tags:
+        - cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: The id of the cart to retrieve
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: get the specaific cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+    post:
+      summary: Add an item to cart
+      operationId: addItemToCart
+      tags:
+        - cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: The id of the cart to retrieve
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The item
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItem'
+        required: true
+      responses:
+        '200':
+          description: add an item to cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /carts/{cartId}/total:
+    get:
+      summary: Total for a specific cart
+      operationId: showCartTotal
+      tags:
+        - cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: The id of the cart to get total
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: get total price of the cart
+          content:
+            application/json:
+              schema:
+                type: number
+                format: double
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /carts/{cartId}/checkout:
+    get:
+      summary: checkout for a specific cart
+      operationId: checkout
+      tags:
+        - cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: The id of the cart to checkout
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: get total price of the cart and checkout
+          content:
+            application/json:
+              schema:
+                type: number
+                format: double
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /products:
+    get:
+      summary: List all products
+      operationId: listProducts
+      tags:
+        - products
+      responses:
+        '200':
+          description: A paged array of products
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /products/{productId}:
+    get:
+      summary: Info for a specific product
+      operationId: showProductById
+      tags:
+        - product
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The id of the product to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /orders:
+    post:
+      summary: Create a new order
+      operationId: createOrder
+      tags:
+        - order
+      requestBody:
+        description: The items
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItems'
+        required: true
+      responses:
+        201:
+          description: The order was successfully added.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        400:
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /deliveries:
+    get:
+      summary: show all deliveries
+      operationId: allDeliveries
+      tags:
+        - delivery
+      responses:
+        '200':
+          description: show all deliveries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deliveries'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /deliveries/{deliveryId}:
+    get:
+      summary: Info for a specific delivery
+      operationId: showDeliveryById
+      tags:
+        - delivery
+      parameters:
+        - name: deliveryId
+          in: path
+          required: true
+          description: The id of the delivery
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Delivery"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+components:
+  schemas:
+    Carts:
+      type: array
+      items:
+        $ref: "#/components/schema/Cart"
+    Cart:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: "#/components/schema/CartItem"
+    CartItem:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          format: int32
+        product:
+          $ref: "#/components/schema/Product"
+    CartItems:
+      type: array
+      items: 
+        $ref: "#/components/schema/CartItem"
+    Product:
+      type: object
+      required:
+        - id
+        - name
+        - price
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        image:
+          type: string
+    Products:
+      type: array
+      items:
+        $ref: "#/components/schemas/Product"
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int32
+        items:
+          type: array
+          items: 
+            $ref: "#/components/schema/CartItem"
+    Delivery:
+      type: object
+      properties:
+        deliveryId:
+          type: integer
+          format: int32
+        order:
+          $ref: "#/components/schema/Order"
+        status:
+          type: string
+    Deliveries:
+      type: array
+      items:
+        $ref: "#/components/schemas/Delivery"
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+  responses:
+    NullResponse:
+      description: Null response
+    UnexpectedError:
+      description: unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

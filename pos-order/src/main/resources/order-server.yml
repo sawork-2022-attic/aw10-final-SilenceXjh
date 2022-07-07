@@ -1,0 +1,23 @@
+# Spring properties
+spring:
+  application:
+     name: order-service  # Service registers under this name
+  freemarker:
+    enabled: false           # Ignore Eureka dashboard FreeMarker templates
+  cloud:
+    stream:
+      bindings:
+        orderOutput:
+          destination: orderOutput
+
+# HTTP Server
+server.port: 4444   # HTTP (Tomcat) port
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 10   # DO NOT DO THIS IN PRODUCTION
+
+management.endpoints.web.exposure.include: '*'

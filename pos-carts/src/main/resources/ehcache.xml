@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	updateCheck="false">
+ 
+	<diskStore path="java.io.tmpdir/Tmp_EhCache" />
+	
+	<!-- 默认配置 -->
+	<defaultCache 
+		eternal="false" 
+		maxElementsInMemory="5000"
+		overflowToDisk="true" 
+		diskPersistent="false" 
+		timeToIdleSeconds="60"
+		timeToLiveSeconds="100" 
+		diskExpiryThreadIntervalSeconds="100"
+		memoryStoreEvictionPolicy="LFU" />
+		
+	<cache name="cartCache" 
+		eternal="false"
+		maxElementsInMemory="5000" 
+		overflowToDisk="false" 
+		diskPersistent="false"
+		timeToIdleSeconds="0" 
+		timeToLiveSeconds="7200"
+		memoryStoreEvictionPolicy="LRU" /> 
+		
+</ehcache>  
